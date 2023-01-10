@@ -90,7 +90,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   postDataToServer() async {
-    final uri = "https://jsonplaceholder.typicode.com/posts/121231";
+    final uri = "https://jsonplaceholder.typicode.com/posts";
 
     try {
       http.post(Uri.parse(uri), body: {
@@ -100,7 +100,10 @@ class _HomepageState extends State<Homepage> {
         "Content-Type": "application/json",
         // "Authorization": "Bearer .....",
       });
-    } catch (e) {}
+    } catch (e, s) {
+      print(e);
+      print(s);
+    }
   }
 
   onPressed() {
