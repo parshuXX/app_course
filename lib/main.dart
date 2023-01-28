@@ -1,11 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start_app/bloc/auth/auth_cubit.dart';
+import 'package:start_app/bloc/theme/theme_cubit.dart';
+import 'package:start_app/navigation/nav.dart';
 import 'package:start_app/navigation/route_generator.dart';
-import 'package:start_app/screen/ig_post_screen.dart';
+import 'package:start_app/screen/home_screen.dart';
 import 'package:start_app/screen/stack_screen.dart';
+import 'package:start_app/util/theme.dart';
 
 import 'navigation/routes.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,11 +22,27 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "My App",
-      theme: ThemeData(primarySwatch: Colors.purple, textTheme: TextTheme()),
-      initialRoute: Routes.spalshScreen,
-      onGenerateRoute: customRouteGenerator,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => ThemeCubit()..initThemes()),
+        BlocProvider(create: (_) => AuthCubit()),
+      ],
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeState) {
+          print(themeState);
+          return MaterialApp(
+            title: "My App",
+            navigatorKey: Nav.navKey,
+            theme: CustomTheme.lightTheme,
+            darkTheme: CustomTheme.darkTheme,
+            highContrastDarkTheme: CustomTheme.highContrastDarkTheme,
+            highContrastTheme: CustomTheme.highContrastLightTheme,
+            themeMode: themeState,
+            initialRoute: Routes.spalshScreen,
+            onGenerateRoute: customRouteGenerator,
+          );
+        },
+      ),
     );
   }
 }
@@ -33,7 +53,7 @@ class OurApp extends StatelessWidget {
     return new MaterialApp(
       title: "Our App",
       theme: ThemeData(primarySwatch: Colors.purple, textTheme: TextTheme()),
-      home: IgHomeScreen(),
+      home: HomeScreen(),
     ); // most important widget for the app
   }
 }
