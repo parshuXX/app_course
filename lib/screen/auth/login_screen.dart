@@ -1,17 +1,19 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:start_app/bloc/theme/theme_cubit.dart';
 import 'package:start_app/util/assets.dart';
+import 'package:start_app/util/extensions.dart';
 import 'package:start_app/util/shared_pref.dart';
+import 'package:start_app/util/util_functions.dart';
 import 'package:start_app/widget/custom_textfield.dart';
 
-import '../../navigation/Routes.dart';
+import '../../navigation/routes.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -115,6 +117,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final h6 = Theme.of(context)
+        .textTheme
+        .headline6!
+        .copyWith(fontWeight: FontWeight.bold);
+    final h66 = theme.h6;
+    final bool isDarkMode = Functions.isDarkMode(theme);
+
     return Scaffold(
       // backgroundColor: Colors.blue,
       body: SafeArea(
@@ -127,12 +138,26 @@ class _LoginScreenState extends State<LoginScreen> {
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Text("Hello",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                Text("Welcome to the app",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Hello", style: theme.h1),
+                    IconButton(
+                      onPressed: () {
+                        final bool isDarkMode = Functions.isDarkMode(theme);
+
+                        BlocProvider.of<ThemeCubit>(context)
+                            .toggleTheme(isDarkMode);
+
+                        // context.read<ThemeCubit>().toggleTheme(isDarkMode);
+                      },
+                      icon: Icon(isDarkMode
+                          ? Icons.dark_mode_outlined
+                          : Icons.dark_mode),
+                    )
+                  ],
+                ),
+                Text("Welcome to the app", style: theme.h1),
                 SizedBox(height: 40),
                 // Text("Email"),
                 // TextFormField(
@@ -233,7 +258,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomTextField(
                   controller: emailController,
                   validator: EmailValidator(errorText: "Email must be valid"),
-                  prefix: Icon(Icons.email_outlined),
+                  prefix: Icon(
+                    Icons.email_outlined,
+                    color: Colors.white,
+                  ),
                   hintText: "test@test.com",
                 ),
 
@@ -247,7 +275,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     PatternValidator(r'(?=.*?[#?!@$%^&*])',
                         errorText: "Password must contain 1 special character")
                   ]),
-                  prefix: Icon(Icons.lock_outline),
+                  prefix: Icon(
+                    Icons.lock_outline,
+                    color: Colors.white,
+                  ),
                   suffix: InkWell(
                     onTap: () {
                       _hidePassword = !_hidePassword; // false
@@ -255,9 +286,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() {});
                       print("password is hidden: $_hidePassword");
                     },
-                    child: Icon((_hidePassword == true)
-                        ? Icons.visibility
-                        : Icons.visibility_off_outlined),
+                    child: Icon(
+                      (_hidePassword == true)
+                          ? Icons.visibility
+                          : Icons.visibility_off_outlined,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -276,10 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {
                     Navigator.pushNamed(context, Routes.signupScreen);
                   },
-                  child: Text(
-                    "Do not have an account yet? Sign Up",
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  child: Text("Do not have an account yet? Sign Up"),
                 ),
                 SizedBox(height: 15),
 
@@ -289,7 +320,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.red)),
                   child: Row(children: [
-                    SvgPicture.asset(
+                    Image.asset(
                       Assets.googleIcon,
                       height: 25,
                       width: 25,

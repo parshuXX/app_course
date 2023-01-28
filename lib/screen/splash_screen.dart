@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:start_app/screen/home_screen.dart';
 import 'package:start_app/util/assets.dart';
 import 'package:start_app/util/shared_pref.dart';
 
-import '../navigation/Routes.dart';
+import '../navigation/routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,8 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkLoggedInStatusAndNavigate() async {
-    await SharedPref.clearAll();
-
     final isLoggedIn = await SharedPref.getUserLoggedIn();
     await Future.delayed(Duration(milliseconds: 1000), () {
       if (isLoggedIn == false) {
@@ -29,7 +27,13 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
 
-      Navigator.pushNamed(context, Routes.homeScreen);
+      Navigator.pushNamed(
+        context,
+        Routes.homeScreen,
+        arguments: {"number": 1232, "test": "this is tset"},
+      );
+
+      Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
     });
   }
 

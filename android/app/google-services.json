@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "330569874394",
+    "project_id": "avid-water-313110",
+    "storage_bucket": "avid-water-313110.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330569874394:android:d7973a1a17d865a3c61ee3",
+        "android_client_info": {
+          "package_name": "com.example.start_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330569874394-7bc46cjpavb13pg5pmm4bmsoadj1a0r7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.start_app",
+            "certificate_hash": "7eb13badd1b0533b3bdbca339bae1e35ed51f27e"
+          }
+        },
+        {
+          "client_id": "330569874394-61fkb7l4q8fqcn78tdchk28edt2eu6vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp9N2kGePrqft-wb-BTrSwVTPwRHGrbSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330569874394-61fkb7l4q8fqcn78tdchk28edt2eu6vk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
